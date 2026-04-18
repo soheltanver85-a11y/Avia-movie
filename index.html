@@ -1,1 +1,193 @@
 
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVIA MOVIE | Premium Streaming</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #e50914; /* Netflix Red */
+            --bg-color: #080808;
+            --card-bg: #161616;
+            --text-color: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        /* প্রফেশনাল হেডার */
+        header {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 100%);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* মুভি গ্রিড */
+        .container {
+            padding: 20px 5%;
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 10px;
+        }
+
+        .movie-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 25px;
+        }
+
+        /* প্রিমিয়াম কার্ড ডিজাইন */
+        .movie-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: white;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .movie-card:hover {
+            transform: scale(1.08);
+            box-shadow: 0 15px 30px rgba(229, 9, 20, 0.3);
+            z-index: 2;
+        }
+
+        .poster-container {
+            position: relative;
+            width: 100%;
+            padding-top: 145%;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .poster-container img {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+        }
+
+        /* গ্লাস মরফিজম ব্যাজ */
+        .badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(229, 9, 20, 0.9);
+            padding: 3px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .movie-info {
+            padding: 12px;
+        }
+
+        .movie-info h3 {
+            font-size: 13px;
+            margin: 0;
+            font-weight: 400;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ফুটার */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 50px;
+            background: #111;
+            border-top: 1px solid #222;
+        }
+
+        footer p {
+            color: #666;
+            font-size: 13px;
+            letter-spacing: 1px;
+        }
+
+        .developer {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* মোবাইল ফ্রেন্ডলি অ্যাডজাস্টমেন্ট */
+        @media (max-width: 600px) {
+            .movie-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">AVIA MOVIE</div>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">Latest Releases</h2>
+        <div class="movie-grid" id="movie-list">
+            </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 AVIA MOVIE. All Rights Reserved.</p>
+        <p>Developed by <a href="#" class="developer">Sohel Tanveer</a></p>
+    </footer>
+
+    <script>
+        fetch('movies.json')
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('movie-list');
+                data.forEach(movie => {
+                    container.innerHTML += `
+                        <a href="${movie.link}" class="movie-card" target="_blank">
+                            <div class="poster-container">
+                                <img src="${movie.poster}" alt="${movie.title}">
+                                <span class="badge">${movie.quality}</span>
+                            </div>
+                            <div class="movie-info">
+                                <h3>${movie.title}</h3>
+                            </div>
+                        </a>
+                    `;
+                });
+            })
+            .catch(err => console.error("Error loading movies:", err));
+    </script>
+</body>
+</html>
